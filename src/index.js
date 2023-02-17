@@ -9,24 +9,31 @@ import heapSort from './algorithms/heapsort.js';
 const MIN_HEIGHT = 20;
 const MAX_HEIGHT = 500;
 const INITIAL_SIZE = 64;
+const INITIAL_DELAY = 10;
 
 let arr = []; // store heights of bars
 let size = INITIAL_SIZE;
-let delay = 5;
+let delay = INITIAL_DELAY;
 
 const arrayContainer = document.querySelector('#array-container');
 
-function component() {
-    const element = document.createElement('div');
- 
-    element.textContent = "Hello World!";
-    element.classList.add('hello');
- 
-    return element;
-}
-
 const randHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - MIN_HEIGHT)) + MIN_HEIGHT;
 const sleep = (delay) => new Promise(resolve => setTimeout(resolve, delay));
+
+function computeWidth() {
+    return 75/size;
+}
+
+const sizeSlider = document.querySelector('#size-slider');
+sizeSlider.addEventListener('input', (e) => {
+    size = e.srcElement.value;
+    randomise();
+});
+
+const speedSlider = document.querySelector('#speed-slider');
+speedSlider.addEventListener('input', (e) => {
+    delay = 1000 / (e.srcElement.value * e.srcElement.value);
+});
 
 // Randomises array and displays on page
 function randomise() {
@@ -39,7 +46,7 @@ function randomise() {
         element.classList.add('array-elem');
         element.dataset.index = i
         element.style['height'] = `${h}px`;
-        element.style['width'] = "10px";
+        element.style['width'] = `${computeWidth()}vw`;
         arrayContainer.appendChild(element);
     }
 }
