@@ -7,27 +7,27 @@ function* merge(arr, l, m, r) {
     const n1 = L.length, n2 = R.length;
 
     let i = 0, j = 0, k = l;
-    
+
     // merge non-empty subarrays
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
             yield [k, k, L[i], L[i], SWAP]; 
-            arr[k++] = L[i++];
+            k++, i++;
         }
         else {
             yield [k, k, R[j], R[j], SWAP];
-            arr[k++] = R[j++];
+            k++, j++;
         }
     }
 
     // fill up rest if one array is still non-empty
     while (i < n1) {
         yield [k, k, L[i], L[i], SWAP]; 
-        arr[k++] = L[i++];
+        k++, i++;
     }
     while (j < n2) {
         yield [k, k, R[j], R[j], SWAP]; 
-        arr[k++] = R[j++];
+        k++, j++;
     }
 }
 
@@ -42,6 +42,5 @@ function* mergeSortHelper(arr, l, r) {
 }
 
 export default function* (size, arr) {
-    const arrCopy = [...arr];
-    yield *mergeSortHelper(arrCopy, 0, size - 1);
+    yield *mergeSortHelper(arr, 0, size - 1);
 }
