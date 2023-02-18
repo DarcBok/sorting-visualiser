@@ -6,8 +6,8 @@ import mergeSort from './algorithms/mergesort.js'
 import quickSort from './algorithms/quicksort.js';
 import heapSort from './algorithms/heapsort.js';
 
-const MIN_HEIGHT = 20;
-const MAX_HEIGHT = 500;
+const MIN_HEIGHT = 75;
+const MAX_HEIGHT = 5;
 const INITIAL_SIZE = 64;
 const INITIAL_DELAY = 10;
 
@@ -45,7 +45,7 @@ function randomise() {
         const element = document.createElement('div');
         element.classList.add('array-elem');
         element.dataset.index = i
-        element.style['height'] = `${h}px`;
+        element.style['height'] = `${h}vh`;
         element.style['width'] = `${computeWidth()}vw`;
         arrayContainer.appendChild(element);
     }
@@ -64,8 +64,8 @@ function swap(a, b, h1, h2) {
     const item1 = document.querySelector(`[data-index='${a}']`);
     const item2 = document.querySelector(`[data-index='${b}']`);
 
-    item1.style['height'] = `${h1}px`
-    item2.style['height'] = `${h2}px`;
+    item1.style['height'] = `${h1}vh`
+    item2.style['height'] = `${h2}vh`;
 }
 
 function chooseSort(choice) {
@@ -88,10 +88,43 @@ async function sort(event) {
 }
 
 
-const sortButtons = document.querySelector('#sort-selection').querySelectorAll('button');
+const sortButtons = document.querySelector('#sort-selection').querySelectorAll('.sort-button');
 sortButtons.forEach(button => button.addEventListener('click', sort));
+
+
+// distance magic
+
+//sortButtons.forEach(button => {
+//    button.style.width = `${(parseInt(button.offsetWidth) + 20)}px`;
+//    let rect = button.getBoundingClientRect();
+//    console.log(rect.left, rect.right);
+//});
+//const distances = []//
+
+//const buttons = Array.from(sortButtons);
+//const dot = document.querySelector('#dot');//
+
+//// initial transform
+//distances.push((buttons[0].getBoundingClientRect().right - buttons[0].getBoundingClientRect().left) / 2);//
+
+//// distances between each button
+//buttons.slice(1).reduce((prev, curr) => {
+//    let rect = curr.getBoundingClientRect().left;
+//    distances.push(rect - prev);
+//    return rect;
+//}, dot.getBoundingClientRect().left);//
+//
+
+//for (let i = 0; i < buttons.length; i++) {
+//    buttons[i].addEventListener('mouseenter', (e) => {
+//        dot.style.cssText += `transform: translateX(${distances[i]})`;
+//    });
+//}
+
+
+
+
 
 const randomButton = document.querySelector('#randomise');
 randomButton.addEventListener('click', randomise);
 
-console.log("Hello World!");
