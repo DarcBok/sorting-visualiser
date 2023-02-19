@@ -79,8 +79,6 @@ function changeChoice(e) {
 }
 
 function visualise(a, b, h1, h2, action) {
-    const items = document.querySelectorAll('.array-elem');
-    items.forEach(item => item.style['background-color'] = DEFAULT_COLOR);
     if (action) {
         const item1 = document.querySelector(`[data-index='${a}']`);
         const item2 = document.querySelector(`[data-index='${b}']`);
@@ -92,12 +90,15 @@ function visualise(a, b, h1, h2, action) {
 // a and b are indices of arr and data-index
 // swap places in arr and swap places on DOM
 function swap(a, b, h1, h2) {
+    
+    // clear colours
+    const items = document.querySelectorAll('.array-elem');
+    items.forEach(item => item.style['background-color'] = DEFAULT_COLOR);
+
     arr[a] = h1;
     arr[b] = h2;
-
     const item1 = document.querySelector(`[data-index='${a}']`);
     const item2 = document.querySelector(`[data-index='${b}']`);
-
     item1.style['height'] = `${h1}vh`
     item2.style['height'] = `${h2}vh`;
 }
