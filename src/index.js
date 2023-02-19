@@ -38,10 +38,11 @@ const positions = {
 const randHeight = () => Math.random() * (MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
 const sleep = (delay) => new Promise(resolve => setTimeout(resolve, delay));
 
-let abort = false;
-let sorted = false;
-let sorting = false;
-let paused = false;
+let abort = false;      // Sort is stopped
+let sorted = false;     // Array is sorted
+let sorting = false;    // Array is being sorted
+let paused = false;     // Sorting is paused
+let chosen = false;     // Sort is selected
 
 function computeWidth() {
     return 100/size;
@@ -92,6 +93,8 @@ function changeChoice(e) {
     chosenButton.classList.add('active');
     dot.classList.add('active');
     dot.style.left = `${positions[choice]}%`;
+
+    chosen = true;
 }
 
 // Visualise array element a and b.
@@ -185,6 +188,7 @@ randomButton.addEventListener('click', async () => {
 
 const sortButton = document.querySelector('#sort-button');
 sortButton.addEventListener('click', async () => {
+    if (!chosen) return;
     if (sorting) {
         if (paused) {
             paused = false;
@@ -201,7 +205,10 @@ sortButton.addEventListener('click', async () => {
 });
 
 const sortButtons = document.querySelector('#sort-selection').querySelectorAll('.sort-button');
-sortButtons.forEach(button => button.addEventListener('click', changeChoice));
+sortButtons.forEach(button => button.addEventListener('click', (e) => {
+    changeChoice(e);
+    sortButton.classList.remove('inactive');
+}));
 
 const arrayContainer = document.querySelector('#array-container');
 const dot = document.querySelector('#dot');

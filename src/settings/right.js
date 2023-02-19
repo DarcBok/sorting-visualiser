@@ -4,6 +4,7 @@ export default function() {
 
     const sortButton = document.createElement('button');
     sortButton.id = "sort-button";
+    sortButton.classList.add('inactive');
     sortButton.textContent = "Sort";
 
     const randomButton = document.createElement('button')
