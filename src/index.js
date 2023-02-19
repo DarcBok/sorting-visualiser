@@ -31,7 +31,7 @@ const randHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - MIN_HEIGHT)) +
 const sleep = (delay) => new Promise(resolve => setTimeout(resolve, delay));
 
 function computeWidth() {
-    return 75/size;
+    return 100/size;
 }
 
 const sizeSlider = document.querySelector('#size-slider');
@@ -56,7 +56,7 @@ function randomise() {
         element.classList.add('array-elem');
         element.dataset.index = i
         element.style['height'] = `${h}vh`;
-        element.style['width'] = `${computeWidth()}vw`;
+        element.style['width'] = `${computeWidth()}%`;
         arrayContainer.appendChild(element);
     }
 }
@@ -65,9 +65,6 @@ randomise();
 // a and b are indices of arr and data-index
 // swap places in arr and swap places on DOM
 function swap(a, b, h1, h2) {
-    //let tmp = arr[a];
-    //arr[a] = arr[b]
-    //arr[b] = tmp;
     arr[a] = h1;
     arr[b] = h2;
 
