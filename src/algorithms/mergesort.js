@@ -1,3 +1,4 @@
+const MERGE = 2;
 const SWAP = 1;
 const COMP = 0;
 
@@ -11,22 +12,22 @@ function* merge(arr, l, m, r) {
     // merge non-empty subarrays
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
-            yield [k, k, L[i], L[i], SWAP]; 
+            yield [k, m+j+1, L[i], R[j], MERGE]; 
             k++, i++;
         }
         else {
-            yield [k, k, R[j], R[j], SWAP];
+            yield [k, m+j+1, R[j], R[j], MERGE];
             k++, j++;
         }
     }
 
     // fill up rest if one array is still non-empty
     while (i < n1) {
-        yield [k, k, L[i], L[i], SWAP]; 
+        yield [k, m+j, L[i], R[j], MERGE]; 
         k++, i++;
     }
     while (j < n2) {
-        yield [k, k, R[j], R[j], SWAP]; 
+        yield [k, m+j+1, R[j], R[j], MERGE]; 
         k++, j++;
     }
 }

@@ -13,6 +13,9 @@ const INITIAL_DELAY = 10;
 const DEFAULT_COLOR = 'white';
 const COMP_COLOR = '#fddb3a';
 const SORTED_COLOR = '#00c900';
+const MERGE = 2;
+const SWAP = 1;
+const COMP = 0;
 
 let arr = []; // container of bar heights
 let choice = ""; // choice of sort
@@ -78,13 +81,11 @@ function changeChoice(e) {
     dot.style.left = `${positions[choice]}%`;
 }
 
-function visualise(a, b, h1, h2, action) {
-    if (action) {
-        const item1 = document.querySelector(`[data-index='${a}']`);
-        const item2 = document.querySelector(`[data-index='${b}']`);
-        item1.style['background-color'] = COMP_COLOR;
-        item2.style['background-color'] = COMP_COLOR;
-    }
+function visualise(a, b) {
+    const item1 = document.querySelector(`[data-index='${a}']`);
+    const item2 = document.querySelector(`[data-index='${b}']`);
+    item1.style['background-color'] = COMP_COLOR;
+    item2.style['background-color'] = COMP_COLOR;
 }
 
 // a and b are indices of arr and data-index
@@ -92,15 +93,23 @@ function visualise(a, b, h1, h2, action) {
 function swap(a, b, h1, h2) {
     
     // clear colours
-    const items = document.querySelectorAll('.array-elem');
-    items.forEach(item => item.style['background-color'] = DEFAULT_COLOR);
+    clear();
 
     arr[a] = h1;
     arr[b] = h2;
     const item1 = document.querySelector(`[data-index='${a}']`);
     const item2 = document.querySelector(`[data-index='${b}']`);
-    item1.style['height'] = `${h1}vh`
+    item1.style['height'] = `${h1}vh`;
     item2.style['height'] = `${h2}vh`;
+}
+
+// used only for mergeSort
+// only alters height of one item
+function merge(a, h) {
+    clear();
+    arr[a] = h;
+    const item = document.querySelector(`[data-index='${a}']`);
+    item.style['height'] = `${h}vh`;
 }
 
 function chooseSort() {
@@ -121,13 +130,28 @@ async function flourish() {
     }
 }
 
+function clear() {
+    const items = document.querySelectorAll('.array-elem');
+    items.forEach(item => item.style['background-color'] = DEFAULT_COLOR);
+}
+
 async function sort(event) {
     const process = chooseSort(event.srcElement.id);
     for (const [a, b, h1, h2, action] of process) {
-        if (action) {
-            visualise(a, b, h1, h2, action);
+        if (action === COMP) {
+            visualise(a, b);
+            await sleep(delay);
+            clear();
+        }
+        if (action === SWAP) {
+            visualise(a, b);
             await sleep(delay);
             swap(a, b, h1, h2);
+        }
+        if (action === MERGE) {
+            visualise(a, b);
+            await sleep(delay);
+            merge(a, h1);
         }
     }
     flourish();
