@@ -143,7 +143,7 @@ async function flourish() {
         itemsArray[i].style['background-color'] = SORTED_COLOR;
         await sleep(10);
     }
-    sorted = true;
+    sorted = sorting ? true : false;
     sortButton.textContent = 'Sort';
 }
 
@@ -188,7 +188,7 @@ randomButton.addEventListener('click', async () => {
 
 const sortButton = document.querySelector('#sort-button');
 sortButton.addEventListener('click', async () => {
-    if (!chosen) return;
+    if (!chosen || sorted) return;
     if (sorting) {
         if (paused) {
             paused = false;
