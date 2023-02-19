@@ -21,6 +21,8 @@ let arr = []; // container of bar heights
 let choice = ""; // choice of sort
 let size = INITIAL_SIZE;
 let delay = INITIAL_DELAY;
+
+// store position of dots
 const positions = {
     bubble: 8.33,
     selection: 25,
@@ -28,7 +30,16 @@ const positions = {
     quicksort: 58.33,
     mergesort: 75,
     heapsort: 91.66
-}; // positions of dots
+}; 
+
+let abort = false;
+const randomButton = document.querySelector('#randomise');
+randomButton.addEventListener('click', async () => {
+    abort = true;
+    await sleep(delay);
+    randomise();
+});
+
 
 const arrayContainer = document.querySelector('#array-container');
 const dot = document.querySelector('#dot');
@@ -65,6 +76,7 @@ function randomise() {
         element.style['width'] = `${computeWidth()}%`;
         arrayContainer.appendChild(element);
     }
+    abort = false;
 }
 randomise();
 
@@ -138,6 +150,7 @@ function clear() {
 async function sort(event) {
     const process = chooseSort(event.srcElement.id);
     for (const [a, b, h1, h2, action] of process) {
+        if (abort) return;
         if (action === COMP) {
             visualise(a, b);
             await sleep(delay);
@@ -165,8 +178,6 @@ const sortButton = document.querySelector('#sort-button');
 sortButton.addEventListener('click', sort);
 
 
-const randomButton = document.querySelector('#randomise');
-randomButton.addEventListener('click', randomise);
 
 
 
