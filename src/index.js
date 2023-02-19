@@ -5,6 +5,9 @@ import insertionSort from './algorithms/insertion.js';
 import mergeSort from './algorithms/mergesort.js'
 import quickSort from './algorithms/quicksort.js';
 import heapSort from './algorithms/heapsort.js';
+import render from './page/render.js';
+
+render();
 
 const MIN_HEIGHT = 75;
 const MAX_HEIGHT = 5;
