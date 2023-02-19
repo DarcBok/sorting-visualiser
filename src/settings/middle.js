@@ -1,6 +1,6 @@
 function createSlider(id, text, min, max, value) {
     const sliderContainer = document.createElement('div');
-    sliderContainer.id = "slider-container";
+    sliderContainer.classList.add("slider-container");
 
     const label = document.createElement('label');
     label.htmlFor = id;
