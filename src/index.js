@@ -118,3 +118,12 @@ sortButton.addEventListener('click', sort);
 const randomButton = document.querySelector('#randomise');
 randomButton.addEventListener('click', randomise);
 
+
+
+// TODO
+// implement swapping visualisation
+// flourish after a sort ends?
+// implement swap/pause
+// clean up style, refactor
+// build HTML?
+// rework webpack to build
