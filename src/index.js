@@ -10,6 +10,9 @@ const MIN_HEIGHT = 75;
 const MAX_HEIGHT = 5;
 const INITIAL_SIZE = 64;
 const INITIAL_DELAY = 10;
+const DEFAULT_COLOR = 'white';
+const COMP_COLOR = '#fddb3a';
+const SORTED_COLOR = '#00c900';
 
 let arr = []; // container of bar heights
 let choice = ""; // choice of sort
@@ -62,19 +65,6 @@ function randomise() {
 }
 randomise();
 
-// a and b are indices of arr and data-index
-// swap places in arr and swap places on DOM
-function swap(a, b, h1, h2) {
-    arr[a] = h1;
-    arr[b] = h2;
-
-    const item1 = document.querySelector(`[data-index='${a}']`);
-    const item2 = document.querySelector(`[data-index='${b}']`);
-
-    item1.style['height'] = `${h1}vh`
-    item2.style['height'] = `${h2}vh`;
-}
-
 function changeChoice(e) {
     const chosenButton = e.srcElement;
     choice = chosenButton.id;
@@ -88,6 +78,30 @@ function changeChoice(e) {
     dot.style.left = `${positions[choice]}%`;
 }
 
+function visualise(a, b, h1, h2, action) {
+    const items = document.querySelectorAll('.array-elem');
+    items.forEach(item => item.style['background-color'] = DEFAULT_COLOR);
+    if (action) {
+        const item1 = document.querySelector(`[data-index='${a}']`);
+        const item2 = document.querySelector(`[data-index='${b}']`);
+        item1.style['background-color'] = COMP_COLOR;
+        item2.style['background-color'] = COMP_COLOR;
+    }
+}
+
+// a and b are indices of arr and data-index
+// swap places in arr and swap places on DOM
+function swap(a, b, h1, h2) {
+    arr[a] = h1;
+    arr[b] = h2;
+
+    const item1 = document.querySelector(`[data-index='${a}']`);
+    const item2 = document.querySelector(`[data-index='${b}']`);
+
+    item1.style['height'] = `${h1}vh`
+    item2.style['height'] = `${h2}vh`;
+}
+
 function chooseSort() {
     if (choice === 'bubble') return bubbleSort(size, arr);
     if (choice === 'selection') return selectionSort(size, arr);
@@ -97,14 +111,25 @@ function chooseSort() {
     if (choice === 'heapsort') return heapSort(size, arr);
 }
 
+async function flourish() {
+    const items = document.querySelectorAll('.array-elem');
+    const itemsArray = Array.from(items);
+    for (let i = 0; i < itemsArray.length; i++) {
+        itemsArray[i].style['background-color'] = SORTED_COLOR;
+        await sleep(delay);
+    }
+}
+
 async function sort(event) {
     const process = chooseSort(event.srcElement.id);
     for (const [a, b, h1, h2, action] of process) {
         if (action) {
+            visualise(a, b, h1, h2, action);
             await sleep(delay);
             swap(a, b, h1, h2);
         }
     }
+    flourish();
 }
 
 
