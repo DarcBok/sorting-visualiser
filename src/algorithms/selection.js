@@ -5,7 +5,7 @@ export default function* (size, arr) {
     for (let i = 0; i < size; i++) {
         let min_idx = i;
         for (let j = i+1; j < size; j++) {
-            yield [i, j, arr[j], arr[i], COMP];
+            yield [min_idx, j, arr[j], arr[i], COMP];
             if (arr[min_idx] > arr[j]) {
                 min_idx = j;
             }

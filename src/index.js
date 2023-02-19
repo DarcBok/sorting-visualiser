@@ -171,8 +171,6 @@ randomButton.addEventListener('click', randomise);
 
 
 // TODO
-// implement swapping visualisation
-// flourish after a sort ends?
 // implement swap/pause
 // clean up style, refactor
 // build HTML?
