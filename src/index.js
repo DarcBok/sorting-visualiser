@@ -17,8 +17,8 @@ const MERGE = 2;
 const SWAP = 1;
 const COMP = 0;
 
-let arr = []; // container of bar heights
-let choice = ""; // choice of sort
+let arr = [];       // container of bar heights
+let choice = "";    // choice of sort
 let size = INITIAL_SIZE;
 let delay = INITIAL_DELAY;
 
@@ -32,28 +32,53 @@ const positions = {
     heapsort: 91.66
 }; 
 
+const randHeight = () => Math.random() * (MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
+const sleep = (delay) => new Promise(resolve => setTimeout(resolve, delay));
+
 let abort = false;
+let sorted = false;
+let sorting = false;
+let paused = false;
+
 const randomButton = document.querySelector('#randomise');
 randomButton.addEventListener('click', async () => {
     abort = true;
-    await sleep(delay);
+    await sleep(delay + 10);
     randomise();
 });
 
+const sortButton = document.querySelector('#sort-button');
+sortButton.addEventListener('click', async () => {
+    if (sorting) {
+        if (paused) {
+            paused = false;
+            sortButton.textContent = 'Pause';
+        } else {
+            paused = true;
+            sortButton.textContent = 'Resume';
+        }
+    } else {
+        sortButton.textContent = 'Pause';
+        sorting = true;
+        sort();
+    }
+});
+
+const sortButtons = document.querySelector('#sort-selection').querySelectorAll('.sort-button');
+sortButtons.forEach(button => button.addEventListener('click', changeChoice));
 
 const arrayContainer = document.querySelector('#array-container');
 const dot = document.querySelector('#dot');
-
-const randHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - MIN_HEIGHT)) + MIN_HEIGHT;
-const sleep = (delay) => new Promise(resolve => setTimeout(resolve, delay));
 
 function computeWidth() {
     return 100/size;
 }
 
 const sizeSlider = document.querySelector('#size-slider');
-sizeSlider.addEventListener('input', (e) => {
+sizeSlider.addEventListener('input', async (e) => {
     size = e.srcElement.value;
+    abort = true;
+    await sleep(delay + 10);
     randomise();
 });
 
@@ -62,7 +87,7 @@ speedSlider.addEventListener('input', (e) => {
     delay = 1000 / (e.srcElement.value * e.srcElement.value);
 });
 
-// Randomises array and displays on page
+// Randomises array and displays on page.
 function randomise() {
     arr = [];
     document.querySelector('#array-container').innerHTML = "";
@@ -77,8 +102,11 @@ function randomise() {
         arrayContainer.appendChild(element);
     }
     abort = false;
+    sorted = false;
+    sorting = false;
+    paused = false;
+    sortButton.textContent = 'Sort';
 }
-randomise();
 
 function changeChoice(e) {
     const chosenButton = e.srcElement;
@@ -93,6 +121,7 @@ function changeChoice(e) {
     dot.style.left = `${positions[choice]}%`;
 }
 
+// Visualise array element a and b.
 function visualise(a, b) {
     const item1 = document.querySelector(`[data-index='${a}']`);
     const item2 = document.querySelector(`[data-index='${b}']`);
@@ -100,10 +129,9 @@ function visualise(a, b) {
     item2.style['background-color'] = COMP_COLOR;
 }
 
-// a and b are indices of arr and data-index
-// swap places in arr and swap places on DOM
+// a and b are indices of arr and data-index.
+// Swap places in arr and swap places on DOM.
 function swap(a, b, h1, h2) {
-    
     // clear colours
     clear();
 
@@ -115,7 +143,6 @@ function swap(a, b, h1, h2) {
     item2.style['height'] = `${h2}vh`;
 }
 
-// used only for mergeSort
 // only alters height of one item
 function merge(a, h) {
     clear();
@@ -140,6 +167,8 @@ async function flourish() {
         itemsArray[i].style['background-color'] = SORTED_COLOR;
         await sleep(delay);
     }
+    sorted = true;
+    sortButton.textContent = 'Sort';
 }
 
 function clear() {
@@ -147,9 +176,13 @@ function clear() {
     items.forEach(item => item.style['background-color'] = DEFAULT_COLOR);
 }
 
-async function sort(event) {
-    const process = chooseSort(event.srcElement.id);
+async function sort() {
+    if (sorted) return;
+    const process = chooseSort();
     for (const [a, b, h1, h2, action] of process) {
+        if (paused) {
+            while (paused) await sleep(1);
+        }
         if (abort) return;
         if (action === COMP) {
             visualise(a, b);
@@ -170,19 +203,10 @@ async function sort(event) {
     flourish();
 }
 
-
-const sortButtons = document.querySelector('#sort-selection').querySelectorAll('.sort-button');
-sortButtons.forEach(button => button.addEventListener('click', changeChoice));
-
-const sortButton = document.querySelector('#sort-button');
-sortButton.addEventListener('click', sort);
-
-
-
+randomise();
 
 
 // TODO
-// implement swap/pause
 // clean up style, refactor
 // build HTML?
 // rework webpack to build
