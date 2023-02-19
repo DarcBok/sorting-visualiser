@@ -17,12 +17,12 @@ const MERGE = 2;
 const SWAP = 1;
 const COMP = 0;
 
-let arr = [];       // container of bar heights
-let choice = "";    // choice of sort
+let arr = [];       // Container of bar heights
+let choice = "";    // Choice of sort
 let size = INITIAL_SIZE;
 let delay = INITIAL_DELAY;
 
-// store position of dots
+// Store position of dots.
 const positions = {
     bubble: 8.33,
     selection: 25,
@@ -39,36 +39,6 @@ let abort = false;
 let sorted = false;
 let sorting = false;
 let paused = false;
-
-const randomButton = document.querySelector('#randomise');
-randomButton.addEventListener('click', async () => {
-    abort = true;
-    await sleep(delay + 10);
-    randomise();
-});
-
-const sortButton = document.querySelector('#sort-button');
-sortButton.addEventListener('click', async () => {
-    if (sorting) {
-        if (paused) {
-            paused = false;
-            sortButton.textContent = 'Pause';
-        } else {
-            paused = true;
-            sortButton.textContent = 'Resume';
-        }
-    } else {
-        sortButton.textContent = 'Pause';
-        sorting = true;
-        sort();
-    }
-});
-
-const sortButtons = document.querySelector('#sort-selection').querySelectorAll('.sort-button');
-sortButtons.forEach(button => button.addEventListener('click', changeChoice));
-
-const arrayContainer = document.querySelector('#array-container');
-const dot = document.querySelector('#dot');
 
 function computeWidth() {
     return 100/size;
@@ -112,10 +82,10 @@ function changeChoice(e) {
     const chosenButton = e.srcElement;
     choice = chosenButton.id;
 
-    // remove previous active classes
+    // Remove previous active classes
     sortButtons.forEach(button => button.classList.remove('active'));
 
-    // activate dot and position
+    // Activate dot and position
     chosenButton.classList.add('active');
     dot.classList.add('active');
     dot.style.left = `${positions[choice]}%`;
@@ -132,7 +102,7 @@ function visualise(a, b) {
 // a and b are indices of arr and data-index.
 // Swap places in arr and swap places on DOM.
 function swap(a, b, h1, h2) {
-    // clear colours
+    // Clear colours
     clear();
 
     arr[a] = h1;
@@ -143,7 +113,7 @@ function swap(a, b, h1, h2) {
     item2.style['height'] = `${h2}vh`;
 }
 
-// only alters height of one item
+// Only alters height of one item.
 function merge(a, h) {
     clear();
     arr[a] = h;
@@ -203,10 +173,40 @@ async function sort() {
     flourish();
 }
 
+const randomButton = document.querySelector('#randomise');
+randomButton.addEventListener('click', async () => {
+    abort = true;
+    await sleep(delay + 10);
+    randomise();
+});
+
+const sortButton = document.querySelector('#sort-button');
+sortButton.addEventListener('click', async () => {
+    if (sorting) {
+        if (paused) {
+            paused = false;
+            sortButton.textContent = 'Pause';
+        } else {
+            paused = true;
+            sortButton.textContent = 'Resume';
+        }
+    } else {
+        sortButton.textContent = 'Pause';
+        sorting = true;
+        sort();
+    }
+});
+
+const sortButtons = document.querySelector('#sort-selection').querySelectorAll('.sort-button');
+sortButtons.forEach(button => button.addEventListener('click', changeChoice));
+
+const arrayContainer = document.querySelector('#array-container');
+const dot = document.querySelector('#dot');
+
+// Initialise
 randomise();
 
 
 // TODO
-// clean up style, refactor
 // build HTML?
 // rework webpack to build
