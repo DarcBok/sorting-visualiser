@@ -30,5 +30,5 @@ export default function() {
     sliders.appendChild(createSlider("speed-slider", "Speed", "1", "20", "10"));
 
     midButtons.appendChild(sliders);
-    return midButtons;
+    return midButtons; 
 }
