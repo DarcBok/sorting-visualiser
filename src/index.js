@@ -11,11 +11,21 @@ const MAX_HEIGHT = 5;
 const INITIAL_SIZE = 64;
 const INITIAL_DELAY = 10;
 
-let arr = []; // store heights of bars
+let arr = []; // container of bar heights
+let choice = ""; // choice of sort
 let size = INITIAL_SIZE;
 let delay = INITIAL_DELAY;
+const positions = {
+    bubble: 8.33,
+    selection: 25,
+    insertion: 41.66,
+    quicksort: 58.33,
+    mergesort: 75,
+    heapsort: 91.66
+}; // positions of dots
 
 const arrayContainer = document.querySelector('#array-container');
+const dot = document.querySelector('#dot');
 
 const randHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - MIN_HEIGHT)) + MIN_HEIGHT;
 const sleep = (delay) => new Promise(resolve => setTimeout(resolve, delay));
@@ -68,7 +78,20 @@ function swap(a, b, h1, h2) {
     item2.style['height'] = `${h2}vh`;
 }
 
-function chooseSort(choice) {
+function changeChoice(e) {
+    const chosenButton = e.srcElement;
+    choice = chosenButton.id;
+
+    // remove previous active classes
+    sortButtons.forEach(button => button.classList.remove('active'));
+
+    // activate dot and position
+    chosenButton.classList.add('active');
+    dot.classList.add('active');
+    dot.style.left = `${positions[choice]}%`;
+}
+
+function chooseSort() {
     if (choice === 'bubble') return bubbleSort(size, arr);
     if (choice === 'selection') return selectionSort(size, arr);
     if (choice === 'insertion') return insertionSort(size, arr);
@@ -89,40 +112,10 @@ async function sort(event) {
 
 
 const sortButtons = document.querySelector('#sort-selection').querySelectorAll('.sort-button');
-sortButtons.forEach(button => button.addEventListener('click', sort));
+sortButtons.forEach(button => button.addEventListener('click', changeChoice));
 
-
-// distance magic
-
-//sortButtons.forEach(button => {
-//    button.style.width = `${(parseInt(button.offsetWidth) + 20)}px`;
-//    let rect = button.getBoundingClientRect();
-//    console.log(rect.left, rect.right);
-//});
-//const distances = []//
-
-//const buttons = Array.from(sortButtons);
-//const dot = document.querySelector('#dot');//
-
-//// initial transform
-//distances.push((buttons[0].getBoundingClientRect().right - buttons[0].getBoundingClientRect().left) / 2);//
-
-//// distances between each button
-//buttons.slice(1).reduce((prev, curr) => {
-//    let rect = curr.getBoundingClientRect().left;
-//    distances.push(rect - prev);
-//    return rect;
-//}, dot.getBoundingClientRect().left);//
-//
-
-//for (let i = 0; i < buttons.length; i++) {
-//    buttons[i].addEventListener('mouseenter', (e) => {
-//        dot.style.cssText += `transform: translateX(${distances[i]})`;
-//    });
-//}
-
-
-
+const sortButton = document.querySelector('#sort-button');
+sortButton.addEventListener('click', sort);
 
 
 const randomButton = document.querySelector('#randomise');
