@@ -141,7 +141,7 @@ async function flourish() {
     const itemsArray = Array.from(items);
     for (let i = 0; i < itemsArray.length; i++) {
         itemsArray[i].style['background-color'] = SORTED_COLOR;
-        await sleep(delay);
+        await sleep(10);
     }
     sorted = true;
     sortButton.textContent = 'Sort';
