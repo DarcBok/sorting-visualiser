@@ -215,8 +215,3 @@ const dot = document.querySelector('#dot');
 
 // Initialise
 randomise();
-
-
-// TODO
-// build HTML?
-// rework webpack to build
